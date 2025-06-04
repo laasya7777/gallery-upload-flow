@@ -43,10 +43,98 @@ interface CartItem {
   quantity: number;
 }
 
+// Sample artworks with placeholder images
+const sampleArtworks: Artwork[] = [
+  {
+    id: 1,
+    title: "Abstract Dreams",
+    description: "A vibrant abstract painting exploring the realm of dreams and imagination.",
+    price: 450,
+    category: "painting",
+    medium: "Acrylic on canvas",
+    dimensions: "24x36 inches",
+    image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=400&fit=crop",
+    artistId: 1,
+    artistName: "Sarah Johnson",
+    uploadDate: "2024-01-15",
+    sold: false
+  },
+  {
+    id: 2,
+    title: "City Lights",
+    description: "A stunning photograph capturing the energy of urban nightlife.",
+    price: 320,
+    category: "photography",
+    medium: "Digital photography",
+    dimensions: "20x30 inches",
+    image: "https://images.unsplash.com/photo-1514905552197-0610a4d8fd73?w=400&h=400&fit=crop",
+    artistId: 2,
+    artistName: "Mike Chen",
+    uploadDate: "2024-01-20",
+    sold: false
+  },
+  {
+    id: 3,
+    title: "Serenity",
+    description: "A peaceful landscape painting of a mountain lake at sunrise.",
+    price: 680,
+    category: "painting",
+    medium: "Oil on canvas",
+    dimensions: "30x40 inches",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
+    artistId: 3,
+    artistName: "Emma Rodriguez",
+    uploadDate: "2024-01-25",
+    sold: false
+  },
+  {
+    id: 4,
+    title: "Digital Harmony",
+    description: "A modern digital art piece exploring color and form.",
+    price: 280,
+    category: "digital",
+    medium: "Digital art",
+    dimensions: "16x20 inches print",
+    image: "https://images.unsplash.com/photo-1549490349-8643362247b5?w=400&h=400&fit=crop",
+    artistId: 4,
+    artistName: "Alex Thompson",
+    uploadDate: "2024-02-01",
+    sold: false
+  },
+  {
+    id: 5,
+    title: "Ocean Waves",
+    description: "A dynamic seascape capturing the power and beauty of ocean waves.",
+    price: 520,
+    category: "painting",
+    medium: "Watercolor",
+    dimensions: "18x24 inches",
+    image: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=400&fit=crop",
+    artistId: 5,
+    artistName: "David Kim",
+    uploadDate: "2024-02-05",
+    sold: false
+  },
+  {
+    id: 6,
+    title: "Urban Portrait",
+    description: "A striking black and white portrait photography.",
+    price: 380,
+    category: "photography",
+    medium: "Black & white photography",
+    dimensions: "16x24 inches",
+    image: "https://images.unsplash.com/photo-1494790108755-2616c047884c?w=400&h=400&fit=crop",
+    artistId: 6,
+    artistName: "Lisa Park",
+    uploadDate: "2024-02-10",
+    sold: false
+  }
+];
+
 const Index = () => {
   const [currentView, setCurrentView] = useState('home');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [artworks, setArtworks] = useState<Artwork[]>(sampleArtworks);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
@@ -59,7 +147,11 @@ const Index = () => {
 
     const savedArtworks = localStorage.getItem('artworks');
     if (savedArtworks) {
-      setArtworks(JSON.parse(savedArtworks));
+      const parsedArtworks = JSON.parse(savedArtworks);
+      // Merge with sample artworks, avoiding duplicates
+      const existingIds = parsedArtworks.map((art: Artwork) => art.id);
+      const newSampleArtworks = sampleArtworks.filter(art => !existingIds.includes(art.id));
+      setArtworks([...parsedArtworks, ...newSampleArtworks]);
     }
 
     const savedCart = localStorage.getItem('cartItems');
